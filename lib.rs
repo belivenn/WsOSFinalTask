@@ -13,7 +13,7 @@ const MAX_NAME_LENGTH: usize = 20;
 pub mod solanapdas {
     use super::*;
 
-    pub fn create_pet(ctx: Context<CreatePet>, name: String) -> ProgramResult {
+    pub fn create_pet(ctx: Context<CreatePet>, name: String, cid: String) -> ProgramResult {
         let pet = &mut ctx.accounts.pet;
         if name.len() > MAX_NAME_LENGTH {
             return Err(ProgramError::InvalidArgument);
@@ -26,7 +26,7 @@ pub mod solanapdas {
         pet.last_happiness_decrease_timestamp = 0;
         pet.born_date = Clock::get()?.unix_timestamp;
         pet.has_been_fed = false;
-       
+        pet.cid = cid;
         Ok(())
     }
 
@@ -83,6 +83,7 @@ pub struct Pet {
     pub last_happiness_decrease_timestamp: i64,
     pub born_date: i64,
     pub has_been_fed: bool,
+    pub cid : String,
 }
 
 #[derive(Accounts)]
